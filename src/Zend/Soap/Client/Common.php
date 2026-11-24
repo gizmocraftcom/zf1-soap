@@ -71,5 +71,23 @@ if (extension_loaded('soap')) {
                 return call_user_func($this->_doRequestCallback, $this, $request, $location, $action, $version, $oneWay);
             }
         }
+
+        /**
+         * Performs the request with the original SoapClient::__doRequest() implementation.
+         *
+         * Replaces the callable 'SoapClient::__doRequest', which is deprecated since PHP 8.2.
+         *
+         * @internal
+         * @param string $request
+         * @param string $location
+         * @param string $action
+         * @param int    $version
+         * @param bool   $oneWay
+         * @return string|null
+         */
+        public function _doParentRequest(string $request, string $location, string $action, int $version, bool $oneWay = false): ?string
+        {
+            return parent::__doRequest($request, $location, $action, $version, $oneWay);
+        }
     }
 } // end if (extension_loaded('soap')

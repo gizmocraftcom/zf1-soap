@@ -999,11 +999,12 @@ class Zend_Soap_Client
      */
     public function _doRequest(Zend_Soap_Client_Common $client, $request, $location, $action, $version, $one_way = null)
     {
-        // Perform request as is
+        // Perform request as is. Calling the callable 'SoapClient::__doRequest' is deprecated since PHP 8.2,
+        // so the parent implementation is reached through Zend_Soap_Client_Common::_doParentRequest().
         if ($one_way == null) {
-            return call_user_func(array($client,'SoapClient::__doRequest'), $request, $location, $action, $version);
+            return $client->_doParentRequest($request, $location, $action, $version);
         } else {
-            return call_user_func(array($client,'SoapClient::__doRequest'), $request, $location, $action, $version, $one_way);
+            return $client->_doParentRequest($request, $location, $action, $version, $one_way);
         }
     }
 
