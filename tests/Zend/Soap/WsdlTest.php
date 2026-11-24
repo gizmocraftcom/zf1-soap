@@ -20,6 +20,7 @@
  * @version    $Id$
  */
 
+use PHPUnit\Framework\Attributes\Group;
 
 /**
  * Test cases for Zend_Soap_Wsdl
@@ -29,9 +30,9 @@
  * @subpackage UnitTests
  * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @group      Zend_Soap
- * @group      Zend_Soap_Wsdl
  */
+#[Group('Zend_Soap')]
+#[Group('Zend_Soap_Wsdl')]
 class Zend_Soap_WsdlTest extends PHPUnit\Framework\TestCase
 {
     protected function sanitizeWsdlXmlOutputForOsCompability($xmlstring)
@@ -644,9 +645,7 @@ class Zend_Soap_WsdlTest extends PHPUnit\Framework\TestCase
         );
     }
 
-    /**
-     * @group ZF-3910
-     */
+    #[Group('ZF-3910')]
     public function testCaseOfDocBlockParamsDosNotMatterForSoapTypeDetectionZf3910()
     {
         $wsdl = new Zend_Soap_Wsdl('MyService', 'http://localhost/MyService.php');
@@ -659,18 +658,14 @@ class Zend_Soap_WsdlTest extends PHPUnit\Framework\TestCase
         $this->assertEquals('xsd:double', $wsdl->getType('douBLE'));
     }
 
-    /**
-     * @group ZF-11937
-     */
+    #[Group('ZF-11937')]
     public function testWsdlGetTypeWillAllowLongType()
     {
         $wsdl = new Zend_Soap_Wsdl('MyService', 'http://localhost/MyService.php');
         $this->assertEquals('xsd:long', $wsdl->getType('long'));
     }
 
-    /**
-     * @group ZF-5430
-     */
+    #[Group('ZF-5430')]
     public function testMultipleSequenceDefinitionsOfSameTypeWillBeRecognizedOnceBySequenceStrategy()
     {
         $wsdl = new Zend_Soap_Wsdl('MyService', 'http://localhost/MyService.php');
@@ -688,18 +683,14 @@ class Zend_Soap_WsdlTest extends PHPUnit\Framework\TestCase
     const URI_WITH_EXPANDED_AMP    = 'http://localhost/MyService.php?a=b&amp;b=c';
     const URI_WITHOUT_EXPANDED_AMP = 'http://localhost/MyService.php?a=b&b=c';
 
-    /**
-     * @group ZF-5736
-     */
+    #[Group('ZF-5736')]
     public function testHtmlAmpersandInUrlInConstructorIsEncodedCorrectly()
     {
         $wsdl = new Zend_Soap_Wsdl('MyService', self::URI_WITH_EXPANDED_AMP);
         $this->assertStringContainsString(self::URI_WITH_EXPANDED_AMP, $wsdl->toXML());
     }
 
-    /**
-     * @group ZF-5736
-     */
+    #[Group('ZF-5736')]
     public function testHtmlAmpersandInUrlInSetUriIsEncodedCorrectly()
     {
         $wsdl = new Zend_Soap_Wsdl('MyService', 'http://example.com');

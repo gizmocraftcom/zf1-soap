@@ -20,6 +20,8 @@
  * @version    $Id$
  */
 
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
  * @category   Zend
@@ -27,8 +29,8 @@
  * @subpackage UnitTests
  * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @group      Zend_Soap
  */
+#[Group('Zend_Soap')]
 class Zend_Soap_ClientTest extends PHPUnit\Framework\TestCase
 {
     public function setUp(): void
@@ -145,9 +147,7 @@ class Zend_Soap_ClientTest extends PHPUnit\Framework\TestCase
         $this->assertTrue($client->getOptions() == $options);
     }
 
-    /**
-     * @group ZF-8053
-     */
+    #[Group('ZF-8053')]
     public function testGetAndSetUserAgentOption()
     {
         $client = new Zend_Soap_Client();
@@ -175,9 +175,7 @@ class Zend_Soap_ClientTest extends PHPUnit\Framework\TestCase
         $this->assertEquals('agent4', $options['user_agent']);
     }
 
-    /**
-     * @group ZF-6954
-     */
+    #[Group('ZF-6954')]
     public function testUserAgentAllowsEmptyString()
     {
         $client = new Zend_Soap_Client();
@@ -196,9 +194,7 @@ class Zend_Soap_ClientTest extends PHPUnit\Framework\TestCase
         $this->assertArrayNotHasKey('user_agent', $options);
     }
 
-    /**
-     * @group ZF-10542
-     */
+    #[Group('ZF-10542')]
     public function testAllowNumericZeroAsValueForCacheWsdlOption()
     {
         $client = new Zend_Soap_Client();
@@ -217,9 +213,7 @@ class Zend_Soap_ClientTest extends PHPUnit\Framework\TestCase
         $this->assertArrayNotHasKey('cache_wsdl', $options);
     }
 
-    /**
-     * @group ZF-10542
-     */
+    #[Group('ZF-10542')]
     public function testAllowNumericZeroAsValueForCompressionOptions()
     {
         $client = new Zend_Soap_Client();
@@ -238,9 +232,7 @@ class Zend_Soap_ClientTest extends PHPUnit\Framework\TestCase
         $this->assertArrayNotHasKey('compression', $options);
     }
 
-    /**
-     * @group GH-32
-     */
+    #[Group('GH-32')]
     public function testGetAndSetExceptionsOption()
     {
         $client = new Zend_Soap_Client();
@@ -503,9 +495,7 @@ class Zend_Soap_ClientTest extends PHPUnit\Framework\TestCase
         $this->assertEquals($client->getLastRequest(), $expectedRequest);
     }
 
-    /**
-     * @group ZF-6955
-     */
+    #[Group('ZF-6955')]
     public function testSetCookieIsDelegatedToSoapClient()
     {
         $fixtureCookieKey   = 'foo';
@@ -525,6 +515,7 @@ class Zend_Soap_ClientTest extends PHPUnit\Framework\TestCase
         $soap->setCookie($fixtureCookieKey, $fixtureCookieValue);
     }
 
+    #[AllowMockObjectsWithoutExpectations]
     public function testSetSoapClient()
     {
         $clientMock = $this->getMockBuilder('SoapClient')
@@ -536,6 +527,34 @@ class Zend_Soap_ClientTest extends PHPUnit\Framework\TestCase
         $soap->setSoapClient($clientMock);
 
         $this->assertSame($clientMock, $soap->getSoapClient());
+    }
+
+    /**
+     * The default _doRequest() must reach SoapClient::__doRequest() without
+     * deprecated callables (PHP 8.2+). A refused connection ends in a SoapFault.
+     */
+    public function testDoRequestUsesParentImplementation()
+    {
+        $client = new Zend_Soap_Client(null, array('location' => 'http://127.0.0.1:1/', 'uri' => 'urn:zend:test'));
+
+        $warnings = array();
+        set_error_handler(function ($errno, $errstr) use (&$warnings) {
+            $warnings[] = $errstr;
+
+            return true;
+        }, E_WARNING);
+
+        try {
+            $client->ping();
+            $this->fail('A SoapFault was expected');
+        } catch (SoapFault $e) {
+            $this->assertStringContainsString('Could not connect', $e->getMessage());
+        } finally {
+            restore_error_handler();
+        }
+
+        $this->assertNotEmpty($warnings);
+        $this->assertStringContainsString('connect() failed', $warnings[0]);
     }
 }
 

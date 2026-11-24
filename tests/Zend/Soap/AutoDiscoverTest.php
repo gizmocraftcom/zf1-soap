@@ -20,6 +20,8 @@
  * @version    $Id$
  */
 
+use PHPUnit\Framework\Attributes\Group;
+
 /** Include Common TestTypes */
 require_once '_files/commontypes.php';
 
@@ -31,8 +33,8 @@ require_once '_files/commontypes.php';
  * @subpackage UnitTests
  * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @group      Zend_Soap
  */
+#[Group('Zend_Soap')]
 class Zend_Soap_AutoDiscoverTest extends PHPUnit\Framework\TestCase
 {
     public function setUp(): void
@@ -301,9 +303,7 @@ class Zend_Soap_AutoDiscoverTest extends PHPUnit\Framework\TestCase
         unlink(dirname(__FILE__) . '/_files/setclass.wsdl');
     }
 
-    /**
-     * @group ZF-5072
-     */
+    #[Group('ZF-5072')]
     public function testSetClassWithResponseReturnPartCompabilityMode()
     {
         $scriptUri = 'http://localhost/my_script.php';
@@ -418,9 +418,7 @@ class Zend_Soap_AutoDiscoverTest extends PHPUnit\Framework\TestCase
         unlink(dirname(__FILE__) . '/_files/addfunction.wsdl');
     }
 
-    /**
-     * @group ZF-5072
-     */
+    #[Group('ZF-5072')]
     public function testAddFunctionSimpleInReturnNameCompabilityMode()
     {
         $scriptUri = 'http://localhost/my_script.php';
@@ -551,9 +549,7 @@ class Zend_Soap_AutoDiscoverTest extends PHPUnit\Framework\TestCase
         unlink(dirname(__FILE__) . '/_files/addfunction2.wsdl');
     }
 
-    /**
-     * @group ZF-4117
-     */
+    #[Group('ZF-4117')]
     public function testUseHttpsSchemaIfAccessedThroughHttps()
     {
         $_SERVER['HTTPS'] = 'on';
@@ -569,9 +565,7 @@ class Zend_Soap_AutoDiscoverTest extends PHPUnit\Framework\TestCase
         $this->assertStringContainsString($httpsScriptUri, $wsdlOutput);
     }
 
-    /**
-     * @group ZF-4117
-     */
+    #[Group('ZF-4117')]
     public function testChangeWsdlUriInConstructor()
     {
         $scriptUri = 'http://localhost/my_script.php';
@@ -587,9 +581,7 @@ class Zend_Soap_AutoDiscoverTest extends PHPUnit\Framework\TestCase
         $this->assertStringContainsString('http://example.com/service.php', $wsdlOutput);
     }
 
-    /**
-     * @group ZF-4117
-     */
+    #[Group('ZF-4117')]
     public function testChangeWsdlUriViaSetUri()
     {
         $scriptUri = 'http://localhost/my_script.php';
@@ -613,9 +605,7 @@ class Zend_Soap_AutoDiscoverTest extends PHPUnit\Framework\TestCase
         $server->setUri(array('bogus'));
     }
 
-    /**
-     * @group ZF-4117
-     */
+    #[Group('ZF-4117')]
     public function testChangingWsdlUriAfterGenerationIsPossible()
     {
         $scriptUri = 'http://localhost/my_script.php';
@@ -642,11 +632,8 @@ class Zend_Soap_AutoDiscoverTest extends PHPUnit\Framework\TestCase
         $this->assertStringContainsString('http://example2.com/service2.php', $wsdlOutput);
     }
 
-    /**
-     * @group ZF-4688
-     * @group ZF-4125
-     *
-     */
+    #[Group('ZF-4688')]
+    #[Group('ZF-4125')]
     public function testUsingClassWithMultipleMethodPrototypesProducesValidWsdl()
     {
         $scriptUri = 'http://localhost/my_script.php';
@@ -700,9 +687,7 @@ class Zend_Soap_AutoDiscoverTest extends PHPUnit\Framework\TestCase
         );
     }
 
-    /**
-     * @group ZF-4835
-     */
+    #[Group('ZF-4835')]
     public function testUsingRequestUriWithoutParametersAsDefault()
     {
         // Apache
@@ -741,9 +726,7 @@ class Zend_Soap_AutoDiscoverTest extends PHPUnit\Framework\TestCase
         $this->assertEquals('http://localhost/my_script.php', $uri);
     }
 
-    /**
-     * @group ZF-4937
-     */
+    #[Group('ZF-4937')]
     public function testComplexTypesThatAreUsedMultipleTimesAreRecoginzedOnce()
     {
         $server = new Zend_Soap_AutoDiscover('Zend_Soap_Wsdl_Strategy_ArrayOfTypeComplex');
@@ -774,9 +757,7 @@ class Zend_Soap_AutoDiscoverTest extends PHPUnit\Framework\TestCase
         );
     }
 
-    /**
-     * @group ZF-5330
-     */
+    #[Group('ZF-5330')]
     public function testDumpOrXmlOfAutoDiscover()
     {
         $server = new Zend_Soap_AutoDiscover();
@@ -801,9 +782,7 @@ class Zend_Soap_AutoDiscoverTest extends PHPUnit\Framework\TestCase
         );
     }
 
-    /**
-     * @group ZF-5330
-     */
+    #[Group('ZF-5330')]
     public function testDumpOrXmlOnlyAfterGeneratedAutoDiscoverWsdl()
     {
         $server = new Zend_Soap_AutoDiscover();
@@ -822,9 +801,7 @@ class Zend_Soap_AutoDiscoverTest extends PHPUnit\Framework\TestCase
         }
     }
 
-    /**
-     * @group ZF-5604
-     */
+    #[Group('ZF-5604')]
     public function testReturnSameArrayOfObjectsResponseOnDifferentMethodsWhenArrayComplex()
     {
         $autodiscover = new Zend_Soap_AutoDiscover('Zend_Soap_Wsdl_Strategy_ArrayOfTypeComplex');
@@ -836,9 +813,7 @@ class Zend_Soap_AutoDiscoverTest extends PHPUnit\Framework\TestCase
         $this->assertEquals(0, substr_count($wsdl, 'tns:My_Response[]'));
     }
 
-    /**
-     * @group ZF-5430
-     */
+    #[Group('ZF-5430')]
     public function testReturnSameArrayOfObjectsResponseOnDifferentMethodsWhenArraySequence()
     {
         $autodiscover = new Zend_Soap_AutoDiscover('Zend_Soap_Wsdl_Strategy_ArrayOfTypeSequence');
@@ -852,9 +827,7 @@ class Zend_Soap_AutoDiscoverTest extends PHPUnit\Framework\TestCase
         $this->assertEquals(0, substr_count($wsdl, 'tns:string[]'));
     }
 
-    /**
-     * @group ZF-5736
-     */
+    #[Group('ZF-5736')]
     public function testAmpersandInUrlIsCorrectlyEncoded()
     {
         $autodiscover = new Zend_Soap_AutoDiscover();
@@ -866,9 +839,7 @@ class Zend_Soap_AutoDiscoverTest extends PHPUnit\Framework\TestCase
         $this->assertStringContainsString('http://example.com/?a=b&amp;b=c', $wsdl);
     }
 
-    /**
-     * @group ZF-6689
-     */
+    #[Group('ZF-6689')]
     public function testNoReturnIsOneWayCallInSetClass()
     {
         $autodiscover = new Zend_Soap_AutoDiscover();
@@ -881,9 +852,7 @@ class Zend_Soap_AutoDiscoverTest extends PHPUnit\Framework\TestCase
         );
     }
 
-    /**
-     * @group ZF-6689
-     */
+    #[Group('ZF-6689')]
     public function testNoReturnIsOneWayCallInAddFunction()
     {
         $autodiscover = new Zend_Soap_AutoDiscover();
@@ -896,10 +865,8 @@ class Zend_Soap_AutoDiscoverTest extends PHPUnit\Framework\TestCase
         );
     }
 
-    /**
-     * @group ZF-8948
-     * @group ZF-5766
-     */
+    #[Group('ZF-8948')]
+    #[Group('ZF-5766')]
     public function testRecursiveWsdlDependencies()
     {
         $autodiscover = new Zend_Soap_AutoDiscover('Zend_Soap_Wsdl_Strategy_ArrayOfTypeComplex');

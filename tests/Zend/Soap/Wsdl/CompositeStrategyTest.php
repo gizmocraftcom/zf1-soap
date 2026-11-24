@@ -19,6 +19,7 @@
  * @version    $Id$
  */
 
+use PHPUnit\Framework\Attributes\Group;
 
 /**
  * @category   Zend
@@ -26,9 +27,9 @@
  * @subpackage UnitTests
  * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @group      Zend_Soap
- * @group      Zend_Soap_Wsdl
  */
+#[Group('Zend_Soap')]
+#[Group('Zend_Soap_Wsdl')]
 class Zend_Soap_Wsdl_CompositeStrategyTest extends PHPUnit\Framework\TestCase
 {
     public function testCompositeApiAddingStragiesToTypes()

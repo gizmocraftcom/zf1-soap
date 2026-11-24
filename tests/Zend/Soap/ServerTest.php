@@ -20,6 +20,9 @@
  * @version    $Id$
  */
 
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
+use PHPUnit\Framework\Attributes\Group;
+
 require_once dirname(__FILE__) . '/TestAsset/commontypes.php';
 
 /**
@@ -31,9 +34,9 @@ require_once dirname(__FILE__) . '/TestAsset/commontypes.php';
  * @uses       Zend_Server_Interface
  * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @group      Zend_Soap
- * @group      Zend_Soap_Server
  */
+#[Group('Zend_Soap')]
+#[Group('Zend_Soap_Server')]
 class Zend_Soap_ServerTest extends PHPUnit\Framework\TestCase
 {
     public function setUp(): void
@@ -96,9 +99,7 @@ class Zend_Soap_ServerTest extends PHPUnit\Framework\TestCase
         $this->assertFalse($server->getWsiCompliant());
     }
 
-    /**
-     * @group ZF-9816
-     */
+    #[Group('ZF-9816')]
     public function testSetOptionsWithFeaturesOption()
     {
         $server = new Zend_Soap_Server(null, array(
@@ -332,9 +333,7 @@ class Zend_Soap_ServerTest extends PHPUnit\Framework\TestCase
         $server->addFunction($functions);
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testSetClass()
     {
         $server = new Zend_Soap_Server();
@@ -361,9 +360,7 @@ class Zend_Soap_ServerTest extends PHPUnit\Framework\TestCase
         }
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testSetClassWithArguments()
     {
         $server = new Zend_Soap_Server();
@@ -392,9 +389,7 @@ class Zend_Soap_ServerTest extends PHPUnit\Framework\TestCase
         $server->setClass('Zend_Soap_Server_Test_BogusClass');
     }
 
-    /**
-     * @group ZF-4366
-     */
+    #[Group('ZF-4366')]
     public function testSetObject()
     {
         $server = new Zend_Soap_Server();
@@ -821,9 +816,7 @@ class Zend_Soap_ServerTest extends PHPUnit\Framework\TestCase
         $this->assertStringContainsString('Unknown error', $fault->getMessage());
     }
 
-    /**
-     * @group ZF-3958
-     */
+    #[Group('ZF-3958')]
     public function testFaultWithIntegerFailureCodeDoesNotBreakClassSoapFault()
     {
         $server = new Zend_Soap_Server();
@@ -890,9 +883,7 @@ class Zend_Soap_ServerTest extends PHPUnit\Framework\TestCase
         );
     }
 
-    /**
-     * @group ZF-5597
-     */
+    #[Group('ZF-5597')]
     public function testServerAcceptsZendConfigObject()
     {
         $options = array('soap_version' => SOAP_1_1,
@@ -909,9 +900,7 @@ class Zend_Soap_ServerTest extends PHPUnit\Framework\TestCase
         $this->assertEquals($options, $server->getOptions());
     }
 
-    /**
-     * @group ZF-5300
-     */
+    #[Group('ZF-5300')]
     public function testSetAndGetFeatures()
     {
         $server = new Zend_Soap_Server();
@@ -923,9 +912,7 @@ class Zend_Soap_ServerTest extends PHPUnit\Framework\TestCase
         $this->assertEquals(100, $options['features']);
     }
 
-    /**
-     * @group ZF-5300
-     */
+    #[Group('ZF-5300')]
     public function testSetAndGetWsdlCache()
     {
         $server = new Zend_Soap_Server();
@@ -937,9 +924,7 @@ class Zend_Soap_ServerTest extends PHPUnit\Framework\TestCase
         $this->assertEquals(100, $options['cache_wsdl']);
     }
 
-    /**
-     * @group ZF-11411
-     */
+    #[Group('ZF-11411')]
     public function testHandleUsesProperRequestParameter()
     {
         $server = new Zend_Soap_MockServer();

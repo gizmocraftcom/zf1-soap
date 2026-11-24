@@ -20,6 +20,9 @@
  * @version    $Id$
  */
 
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
+use PHPUnit\Framework\Attributes\Group;
+
 require_once dirname(__FILE__) . '/../_files/commontypes.php';
 
 /**
@@ -28,9 +31,9 @@ require_once dirname(__FILE__) . '/../_files/commontypes.php';
  * @subpackage UnitTests
  * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @group      Zend_Soap
- * @group      Zend_Soap_Wsdl
  */
+#[Group('Zend_Soap')]
+#[Group('Zend_Soap_Wsdl')]
 class Zend_Soap_Wsdl_ArrayOfTypeComplexStrategyTest extends PHPUnit\Framework\TestCase
 {
     private $wsdl;
@@ -54,9 +57,7 @@ class Zend_Soap_Wsdl_ArrayOfTypeComplexStrategyTest extends PHPUnit\Framework\Te
         $this->wsdl->addComplexType('Zend_Soap_Wsdl_UnknownClass[]');
     }
 
-    /**
-     * @group ZF-5046
-     */
+    #[Group('ZF-5046')]
     public function testArrayOfSimpleObject()
     {
         $return = $this->wsdl->addComplexType('Zend_Soap_Wsdl_ComplexTest[]');
@@ -84,9 +85,7 @@ class Zend_Soap_Wsdl_ArrayOfTypeComplexStrategyTest extends PHPUnit\Framework\Te
         $wsdl = $this->wsdl->toXML();
     }
 
-    /**
-     * @group ZF-5046
-     */
+    #[Group('ZF-5046')]
     public function testArrayOfComplexObjects()
     {
         $return = $this->wsdl->addComplexType('Zend_Soap_Wsdl_ComplexObjectStructure[]');
@@ -128,9 +127,7 @@ class Zend_Soap_Wsdl_ArrayOfTypeComplexStrategyTest extends PHPUnit\Framework\Te
         );
     }
 
-    /**
-     * @group ZF-4937
-     */
+    #[Group('ZF-4937')]
     public function testAddingTypesMultipleTimesIsSavedOnlyOnce()
     {
         $return = $this->wsdl->addComplexType('Zend_Soap_Wsdl_ComplexObjectWithObjectStructure[]');
@@ -152,9 +149,7 @@ class Zend_Soap_Wsdl_ArrayOfTypeComplexStrategyTest extends PHPUnit\Framework\Te
         );
     }
 
-    /**
-     * @group ZF-4937
-     */
+    #[Group('ZF-4937')]
     public function testAddingSingularThenArrayTypeIsRecognizedCorretly()
     {
         $return = $this->wsdl->addComplexType('Zend_Soap_Wsdl_ComplexObjectWithObjectStructure');
@@ -176,10 +171,8 @@ class Zend_Soap_Wsdl_ArrayOfTypeComplexStrategyTest extends PHPUnit\Framework\Te
         );
     }
 
-    /**
-     * @group ZF-5149
-     * @doesNotPerformAssertions
-     */
+    #[Group('ZF-5149')]
+    #[DoesNotPerformAssertions]
     public function testArrayOfComplexNestedObjectsIsCoveredByStrategyAndNotThrowingException()
     {
         try {
@@ -190,9 +183,7 @@ class Zend_Soap_Wsdl_ArrayOfTypeComplexStrategyTest extends PHPUnit\Framework\Te
         }
     }
 
-    /**
-     * @group ZF-5149
-     */
+    #[Group('ZF-5149')]
     public function testArrayOfComplexNestedObjectsIsCoveredByStrategyAndAddsAllTypesRecursivly()
     {
         $return = $this->wsdl->addComplexType('Zend_Soap_Wsdl_ComplexTypeA');
@@ -215,11 +206,9 @@ class Zend_Soap_Wsdl_ArrayOfTypeComplexStrategyTest extends PHPUnit\Framework\Te
         );
     }
 
-    /**
-     * @group ZF-5754
-     * @group ZF-8948
-     * @doesNotPerformAssertions
-     */
+    #[Group('ZF-5754')]
+    #[Group('ZF-8948')]
+    #[DoesNotPerformAssertions]
     public function testNestingOfSameTypesDoesNotLeadToInfiniteRecursionButWillThrowException()
     {
         $return = $this->wsdl->addComplexType('Zend_Soap_AutoDiscover_Recursion');
